@@ -8,3 +8,9 @@ export async function GetAnswers(message: string): Promise<string>{
 
     return langChainClient.GetResponseOnMessage(message)
 }
+
+export async function defineStrategyOfMessage(message: string) {
+    const langChainClient = container.resolve(LangChainClient);
+
+    return langChainClient.defineStrategyOfMessage(message)
+}

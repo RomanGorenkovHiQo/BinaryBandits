@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 import BotMessage from "./BotMessage";
-import { GetAnswers } from '@/utils/ServiceActions';
+import { defineStrategyOfMessage } from '@/utils/ServiceActions';
 
 interface Message {
   user: boolean;
@@ -15,18 +15,25 @@ const Chat: React.FC = () => {
 
   const sendMessage = async () => {
     if (input.trim()) {
-      setIsLoading(true);
-      // const a = await GetResponseOnMessage(input);
-      setMessages([...messages, { user: true, text: input }]);
-      setInput("");
-      // Simulate bot response
-      const answer = await GetAnswers(input);
+      try {
+        setIsLoading(true);
+        // const a = await GetResponseOnMessage(input);
+        setMessages([...messages, { user: true, text: input }]);
+        setInput("");
+        // Simulate bot response
+        const answer = await defineStrategyOfMessage(input);
 
-      setMessages((prev) => [
-        ...prev,
-        { user: false, text: answer },
-      ]);
-      setIsLoading(false);
+        setMessages((prev) => [
+          ...prev,
+          { user: false, text: answer },
+        ]);
+
+      } catch {
+        console.error('Error')
+      } finally {
+        setIsLoading(false);
+      }
+
     }
   };
 
