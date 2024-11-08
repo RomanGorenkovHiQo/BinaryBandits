@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
 import BotMessage from "./BotMessage";
+import { GetAnswers } from '@/utils/ServiceActions';
 
 interface Message {
   user: boolean;
@@ -11,15 +12,18 @@ const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
 
-  const sendMessage = () => {
+  const sendMessage = async () => {
     if (input.trim()) {
+      // const a = await GetResponseOnMessage(input);
+      const answer = await GetAnswers(input);
+
       setMessages([...messages, { user: true, text: input }]);
       setInput("");
       // Simulate bot response
       setTimeout(() => {
         setMessages((prev) => [
           ...prev,
-          { user: false, text: "Here's a response about movies..." },
+          { user: false, text: answer },
         ]);
       }, 1000);
     }
