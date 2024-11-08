@@ -25,7 +25,7 @@ export class LangChainClient {
     public async defineStrategyOfMessage(userMessage: string) {
         const parser = new JsonOutputParser<Response>();
         const promptTemplate = ChatPromptTemplate.fromMessages([
-            ["system", `Classify the following message as one of the following categories:
+            ["system", `You're a movie assistant, you can only chat with users about movies. Classify the following message as one of the following categories:
     - "info" if the message is asking for information about a movie,
     - "rating" if the message is asking for the rating of a movie,
     - "recommendation" if the message is asking for a movie recommendation.
