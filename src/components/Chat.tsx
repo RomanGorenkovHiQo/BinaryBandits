@@ -11,32 +11,33 @@ interface Message {
 const Chat: React.FC = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const sendMessage = async () => {
     if (input.trim()) {
+      setIsLoading(true);
       // const a = await GetResponseOnMessage(input);
-      const answer = await GetAnswers(input);
-
       setMessages([...messages, { user: true, text: input }]);
       setInput("");
       // Simulate bot response
-      setTimeout(() => {
-        setMessages((prev) => [
-          ...prev,
-          { user: false, text: answer },
-        ]);
-      }, 1000);
+      const answer = await GetAnswers(input);
+
+      setMessages((prev) => [
+        ...prev,
+        { user: false, text: answer },
+      ]);
+      setIsLoading(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+    if (e.key === "Enter" && !isLoading) {
       sendMessage();
     }
   };
 
   return (
-    <div className="bg-[#363535] flex flex-col w-full max-w-md p-6 bg-white rounded-lg shadow-lg">
+    <div className="bg-[#363535] flex flex-col w-full max-w-md p-6 rounded-lg shadow-lg">
       <div className="flex-1 overflow-y-auto mb-4">
         {messages.map((msg, index) => (
           msg.user ? (
@@ -58,6 +59,7 @@ const Chat: React.FC = () => {
           className="flex-1 border border-gray-300 rounded-md p-2 mr-2"
         />
         <button
+          disabled={isLoading || !input.trim()}
           onClick={sendMessage}
           className="bg-blue-500 text-white p-2 rounded-md"
         >

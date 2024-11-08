@@ -17,7 +17,7 @@ export default function BotMessage({ text }: BotMessageProps) {
       } else {
         clearInterval(interval);
       }
-    }, 50); // Скорость отображения текста
+    }, 25);
     return () => clearInterval(interval);
   }, [text]);
 
