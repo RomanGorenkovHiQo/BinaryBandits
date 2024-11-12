@@ -1,7 +1,7 @@
 'use client'
 import { useState } from "react";
 import BotMessage from "./BotMessage";
-import { defineStrategyOfMessage } from '@/utils/ServiceActions';
+import { GetAnswers, handleMessage } from '@/utils/ServiceActions';
 
 interface Message {
   user: boolean;
@@ -21,7 +21,8 @@ const Chat: React.FC = () => {
         setMessages([...messages, { user: true, text: input }]);
         setInput("");
         // Simulate bot response
-        const answer = await defineStrategyOfMessage(input);
+        const answer = await handleMessage(input);
+        // const answer = await GetAnswers(input);
 
         setMessages((prev) => [
           ...prev,
